@@ -1,0 +1,26 @@
+# Secrets & Environment Variables (CRITICAL)
+.env
+*.env
+
+# Python Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Test & Coverage Artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local Generated Output
+pr_comment.md
+
+# macOS System Files
+.DS_Store

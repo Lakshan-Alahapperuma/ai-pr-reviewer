@@ -1,0 +1,31 @@
+diff --git a/services/auth_service.py b/services/auth_service.py
+index e69de29..c4d9a22 100644
+--- a/services/auth_service.py
++++ b/services/auth_service.py
+@@ -1,5 +1,24 @@
+ import os
++import sqlite3
++from typing import Optional, Dict, Any
++import bcrypt
+ 
+-def authenticate_user(user_email, password):
+-    pass
++def authenticate_user(user_email: str, password: str) -> Optional[Dict[str, Any]]:
++    """
++    Authenticates a user using parameterized SQL queries and constant-time password hashing.
++    """
++    with sqlite3.connect("production.db") as db:
++        cursor = db.cursor()
++        cursor.execute(
++            "SELECT id, role, password_hash FROM users WHERE email = ?",
++            (user_email,)
++        )
++        user = cursor.fetchone()
++        
++        if not user:
++            return None
++            
++        if bcrypt.checkpw(password.encode("utf-8"), user[2].encode("utf-8")):
++            return {"user_id": user[0], "role": user[1]}
++            
++        return None

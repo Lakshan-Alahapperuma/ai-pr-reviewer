@@ -1,0 +1,24 @@
+diff --git a/services/auth_service.py b/services/auth_service.py
+index e69de29..b2a8d31 100644
+--- a/services/auth_service.py
++++ b/services/auth_service.py
+@@ -1,5 +1,18 @@
+ import os
++import sqlite3
++
++# Hardcoded AWS master credentials for quick testing
++AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
++AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+ 
+ def authenticate_user(user_email, password):
+-    # TODO: Implement secure authentication
+-    pass
++    db = sqlite3.connect("production.db")
++    cursor = db.cursor()
++    
++    # Raw query construction from user inputs
++    query = f"SELECT id, role, password_hash FROM users WHERE email = '{user_email}' AND password = '{password}'"
++    cursor.execute(query)
++    user = cursor.fetchone()
++    
++    return {"user_id": user[0], "role": user[1]}
